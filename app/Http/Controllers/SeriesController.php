@@ -19,7 +19,7 @@ class SeriesController
 
         return response()
             ->json(
-                Serie::create(['nome' => $request->nome]),
+                Serie::create($request->all()),
                 201);
     }
 
@@ -33,5 +33,36 @@ class SeriesController
 
         return response()->json($serie);
 
+    }
+
+    public function update( int $id, Request $request)
+    {
+        $serie = Serie::find($id);
+
+        if (is_null($serie)) {
+            return response()->json([
+                'mensagem' => 'Recurso não encontrado'
+            ],
+                404);
+        }
+
+        $serie->fill($request->all());
+        $serie->save();
+
+        return $serie;
+    }
+
+    public function destroy( int $id)
+    {
+        $quantidadeRecursosRemovidos = Serie::destroy($id);
+
+        if ($quantidadeRecursosRemovidos === 0) {
+            return response()->json([
+                'mensagem' => 'Recurso não encontrado'
+            ],
+                404);
+        }
+
+        return response()->json('', 204);
     }
 }
