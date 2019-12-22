@@ -7,6 +7,7 @@ use App\Serie;
 
 class SeriesController extends BaseController
 {
+
     public function __construct()
     {
         $this->classe = Serie::class;
